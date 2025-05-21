@@ -33,6 +33,8 @@ router.put("/freelance/profil", authMiddleware, roleMiddleware("freelancer"), (r
 );
 
 
-router.post("/job", authMiddleware, roleMiddleware("client"), (req,res)=> JobController.createJob(req, res));
-
+router.post("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobController.createJob(req, res));
+router.put("/job/:id", authMiddleware, roleMiddleware("client"), (req, res) => JobController.updateJob(req, res));
+router.delete("/job/:id", authMiddleware, roleMiddleware("client"), (req, res) => JobController.deleteJob(req, res));
+router.get("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobController.getJobs(req, res));
 module.exports = router;
