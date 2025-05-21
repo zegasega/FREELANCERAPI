@@ -1,5 +1,6 @@
 const BaseService = require("../core/base_service");
 const db = require("../db/index");
+const { Op } = require("sequelize");
 
 class JobService extends BaseService {
   constructor() {
@@ -8,84 +9,41 @@ class JobService extends BaseService {
 
   async createJob(jobData) {
     const { clientId, title, description, hourlyRate, deadline } = jobData;
-
     const newJob = await this.create({
       clientId,
       title,
       description,
       hourlyRate,
-      deadline,
+      deadline
     });
-
-    return {
-      message: "Job Created Successfully",
-      job: newJob,
-    };
+    return { message: "Job Created successfully", job: newJob };
   }
 
-  async getJobById(id) {
-    const job = await this.findById(id, {
-      include: [
-        {
-          model: db.User,
-          as: "client",
-          attributes: ["id", "username", "email"],
-        },
-      ],
-    });
+  async updateJob(jobId, updateData) {
+    const job = await this.findById(jobId);
+    if (!job) throw new Error("Job not found");
 
-    if (!job) {
-      throw new Error("Job not found");
-    }
-
-    return job;
+    await job.update(updateData);
+    return { message: "Job updated", job };
   }
 
-  async getJobs(query = {}) {
+  async deleteJob(jobId) {
+    const job = await this.findById(jobId);
+    if (!job) throw new Error("Job not found");
+
+    await job.destroy();
+    return { message: "Job deleted" };
+  }
+
+  async getJobsByQuery(query) {
     const where = {};
 
-    if (query.title) {
-      where.title = { [db.Sequelize.Op.iLike]: `%${query.title}%` };
-    }
+    if (query.clientId) where.clientId = query.clientId;
+    if (query.status) where.status = query.status;
+    if (query.title) where.title = { [Op.iLike]: `%${query.title}%` };
 
-    if (query.clientId) {
-      where.clientId = query.clientId;
-    }
-
-    const jobs = await this.findAll({
-      where,
-      include: [
-        {
-          model: db.User,
-          as: "client",
-          attributes: ["id", "username", "email"],
-        },
-      ],
-      order: [["createdAt", "DESC"]],
-    });
-
+    const jobs = await this.model.findAll({ where });
     return jobs;
-  }
-
-  async updateJob(id, data) {
-    const updated = await this.update(id, data);
-    if (!updated) {
-      throw new Error("Job not found or update failed");
-    }
-    return {
-      message: "Job updated successfully",
-      updatedJob: updated,
-    };
-  }
-
-  async deleteJob(id) {
-    const deleted = await this.delete(id);
-    if (!deleted) {
-      throw new Error("Job not found or delete failed");
-    }
-    return {
-      message: "Job deleted successfully",
-    };
   }
 }
 

@@ -4,6 +4,7 @@ const UserController = require("../controllers/user_controller");
 const ProfileController = require("../controllers/profile_controller");
 const authMiddleware = require("../middleware/auth");
 const roleMiddleware  = require("../middleware/role");
+const JobController = require("../controllers/job_controller");
 
 // AUTH ROUTES
 router.post("/auth/register", (req, res) => UserController.Register(req, res));
@@ -31,5 +32,7 @@ router.put("/freelance/profil", authMiddleware, roleMiddleware("freelancer"), (r
   ProfileController.UpdateFreelancerProfile(req, res)
 );
 
+
+router.post("/job", authMiddleware, roleMiddleware("client"), (req,res)=> JobController.createJob(req, res));
 
 module.exports = router;

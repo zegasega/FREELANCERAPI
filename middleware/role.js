@@ -1,3 +1,4 @@
+// middleware/role.js
 module.exports = function roleMiddleware(...allowedRoles) {
   return async (req, res, next) => {
     try {
@@ -13,7 +14,7 @@ module.exports = function roleMiddleware(...allowedRoles) {
         });
       }
 
-      next(); // yetkiliyse devam
+      next();
     } catch (err) {
       return res.status(500).json({ message: 'Role check failed', error: err.message });
     }

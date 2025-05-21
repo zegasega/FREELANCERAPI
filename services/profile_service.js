@@ -3,7 +3,7 @@ const db = require("../db/index");
 
 class ProfileService extends BaseService {
     constructor() {
-        super(db.ClientProfile); // BaseService'e model verildi
+        super(db.ClientProfile);
         this.db = db;
     }
 
@@ -52,7 +52,6 @@ class ProfileService extends BaseService {
         return { message: "Client profile updated", data: existingProfile };
     }
 
-    // --------- FREELANCER METHODS --------- //
 
     async createFreelancerProfile(freelancerData) {
         const { userId, title, bio, experienceYears, hourlyRate } = freelancerData;
