@@ -9,7 +9,7 @@ async function startServer() {
     await db.sequelize.authenticate();
     console.log('Database connection successful');
 
-    await db.sequelize.sync({ alter: true, force: true });
+    await db.sequelize.sync({ alter: true});
     console.log('Tables synchronized'); 
     app.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);

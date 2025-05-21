@@ -16,13 +16,20 @@ router.get("/users", authMiddleware ,(req, res) => UserController.GetAllUsers(re
 router.get("/users/:id", authMiddleware ,(req, res) => UserController.GetUserByID(req, res));
 
 
-// CLİENT PROFİLE
-router.post("/client/profile", authMiddleware, roleMiddleware("freelancer", "client") ,(req, res) => ProfileController.CreateClientProfile(req, res));
-router.put("/client/profile", authMiddleware , roleMiddleware("freelancer", "client"),(req, res) => ProfileController.UpdateClientProfile(req, res));
+// CLİENT PROFILE
+router.post("/client/profile", authMiddleware, roleMiddleware("client"), (req, res) =>
+  ProfileController.CreateClientProfile(req, res));
+router.put("/client/profile", authMiddleware, roleMiddleware("client"), (req, res) =>
+  ProfileController.UpdateClientProfile(req, res));
 
-// FREELANCER PROFİLE
-router.post("/freelance/profil", authMiddleware ,(req, res) => ProfileController.CreateFreelancerProfile(req, res));
-router.put("/freelance/profil", authMiddleware ,(req, res) => ProfileController.UpdateFreelancerProfile(req, res));
+
+// FREELANCER PROFILE
+router.post("/freelance/profil", authMiddleware, roleMiddleware("freelancer"), (req, res) =>
+  ProfileController.CreateFreelancerProfile(req, res)
+);
+router.put("/freelance/profil", authMiddleware, roleMiddleware("freelancer"), (req, res) =>
+  ProfileController.UpdateFreelancerProfile(req, res)
+);
 
 
 module.exports = router;
