@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     userId: { type: DataTypes.INTEGER, allowNull: false, unique: true },
     title: { type: DataTypes.STRING }, 
     bio: { type: DataTypes.TEXT },
-    skills: { type: DataTypes.TEXT },
     experienceYears: { type: DataTypes.INTEGER },
     hourlyRate: { type: DataTypes.FLOAT }
   },
