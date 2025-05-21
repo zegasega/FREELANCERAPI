@@ -16,8 +16,12 @@ router.get("/users/:id", authMiddleware ,(req, res) => UserController.GetUserByI
 
 
 // CLİENT PROFİLE
-router.post("/client/profile", authMiddleware ,(req, res) => ProfileController.CreateProfile(req, res));
+router.post("/client/profile", authMiddleware ,(req, res) => ProfileController.CreateClientProfile(req, res));
 router.put("/client/profile", authMiddleware ,(req, res) => ProfileController.UpdateClientProfile(req, res));
+
+// FREELANCER PROFİLE
+router.post("/client/freelance", authMiddleware ,(req, res) => ProfileController.CreateFreelancerProfile(req, res));
+router.put("/client/freelance", authMiddleware ,(req, res) => ProfileController.UpdateFreelancerProfile(req, res));
 
 
 module.exports = router;

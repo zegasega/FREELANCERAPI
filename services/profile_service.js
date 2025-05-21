@@ -3,7 +3,7 @@ const db = require("../db/index");
 
 class ProfileService extends BaseService {
     constructor() {
-        super(); 
+        super(db.ClientProfile); // BaseService'e model verildi
         this.db = db;
     }
 
@@ -16,10 +16,10 @@ class ProfileService extends BaseService {
         if (!user) throw new Error("User not found");
         if (user.role !== "client") throw new Error("This user is not a client");
 
-        const existingProfile = await this.db.ClientProfile.findOne({ where: { userId } });
+        const existingProfile = await this.findOne(userId);
         if (existingProfile) throw new Error("Client profile already exists");
 
-        const newClientProfile = await this.db.ClientProfile.create({
+        const newClientProfile = await this.create({
             userId,
             companyName,
             website,
@@ -38,7 +38,7 @@ class ProfileService extends BaseService {
         if (!user) throw new Error("User not found");
         if (user.role !== "client") throw new Error("This user is not a client");
 
-        const existingProfile = await this.db.ClientProfile.findOne({ where: { userId } });
+        const existingProfile = await this.findOne(userId);
         if (!existingProfile) throw new Error("Client profile not found");
 
         await existingProfile.update({
