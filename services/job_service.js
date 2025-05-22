@@ -57,13 +57,14 @@ class JobService extends BaseService {
     if (job.status !== "open") {
       throw new Error("Job is not open for assignment");
     }
-
+    if(job.assignedFreelancerId === freelancerId) {
+      throw new Error("Freelancer already assigned to this job");
+    }
+    
     const proposal = await this.db.Proposal.findOne({
-
-            jobId,
-            userId: freelancerId,
-            status: "pending"
-        
+         jobId,
+         userId: freelancerId,
+         status: "pending"
     });
 
     if (!proposal) {
