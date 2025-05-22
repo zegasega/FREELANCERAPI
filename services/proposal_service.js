@@ -1,14 +1,12 @@
 const BaseService = require("../core/base_service");
 const db = require("../db/index");
-const webSocketService = require("./websocket_service");
+
 class ProposalService extends BaseService {
   constructor() {
     super(db.Proposal);
     this.db = db;
-    this.webSocketService = webSocketService; // WS servisi
 
   }
-
   async createProposal(proposalData) {
     const { jobId, userId, coverLetter, proposedRate } = proposalData;
 
@@ -30,11 +28,6 @@ class ProposalService extends BaseService {
       coverLetter,
       proposedRate,
       status: "pending",
-    });
-    this.webSocketService.broadcastToUser(job.clientId, {
-      type: "new_proposal",
-      message: `Job ${jobId} için yeni bir teklif geldi.`,
-      proposal: newProposal,
     });
 
     return {
