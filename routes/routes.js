@@ -5,6 +5,8 @@ const ProfileController = require("../controllers/profile_controller");
 const authMiddleware = require("../middleware/auth");
 const roleMiddleware  = require("../middleware/role");
 const JobController = require("../controllers/job_controller");
+
+const PorposalController = require("../controllers/proposal_controller")
 // AUTH ROUTES
 router.post("/auth/register", (req, res) => UserController.Register(req, res));
 router.post("/auth/login", (req, res) => UserController.Login(req, res));
@@ -40,6 +42,7 @@ router.get("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobCo
 
 // PROPOSAL
 
+router.post("/proposal", authMiddleware, roleMiddleware("freelancer"), (req, res) => PorposalController.CreateProposal(req, res));
 
 
 module.exports = router;
