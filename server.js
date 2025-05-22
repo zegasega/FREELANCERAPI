@@ -1,29 +1,32 @@
 const http = require('http');
 const app = require('./app');
 const db = require('./db/index');
+const WebSocketService = require('./services/websocket_service');
 require('dotenv').config();
-const WebSocketService = require('./services//websocket_service'); 
 
 const PORT = process.env.PORT || 3000;
+const server = http.createServer(app); // HTTP server'ı oluşturduk
 
-
-const server = http.createServer(app);
+let wsService; // dışarıdan erişmek için değişken
 
 async function startServer() {
   try {
     await db.sequelize.authenticate();
     console.log('Database connection successful');
 
-    await db.sequelize.sync({ alter: true });
+    await db.sequelize.sync({ alter: true, force: true });
     console.log('Tables synchronized');
-    
 
-    new WebSocketService(server);
+    wsService = new WebSocketService(server);
     console.log('WebSocket server started');
 
     server.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);
     });
+
+    // Export for access in routes
+    module.exports.wsService = wsService;
+
   } catch (err) {
     console.error('Error starting server:', err);
   }
