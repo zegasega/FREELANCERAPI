@@ -3,16 +3,16 @@ const BaseController = require("../core/base_controller");
 class JobController extends BaseController {
   constructor() {
     super();
+
   }
 
   async assignJob(req, res) {
     try {
-      const {jobId, freelancerId} = req.body;
-      const result = await this.JobService.assignFreelancer(jobId,freelancerId);
+      const { jobId, freelancerId } = req.body;
+      const result = await this.JobService.assignFreelancer(jobId, freelancerId);
       res.status(200).json(result);
     } catch (error) {
-      res.status(400).json(error);
-      
+      res.status(400).json({ error: error.message }); // Wrap error
     }
   }
 

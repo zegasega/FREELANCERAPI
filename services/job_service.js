@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 class JobService extends BaseService {
   constructor() {
     super(db.Job);
-    this.db = this.db;
+    this.db = db;
   }
 
   async createJob(jobData) {
@@ -22,7 +22,7 @@ class JobService extends BaseService {
 
   async updateJob(jobId, updateData) {
     const job = await this.findById(jobId);
-    if (!job) throw new Error("Job not found");
+    if (!job) throw new Error("Job Not Found!");
 
     await job.update(updateData);
     return { message: "Job updated", job };
@@ -59,9 +59,11 @@ class JobService extends BaseService {
     }
 
     const proposal = await this.db.Proposal.findOne({
-        jobId,
-        userId: freelancerId,
-        status: "pending"
+
+            jobId,
+            userId: freelancerId,
+            status: "pending"
+        
     });
 
     if (!proposal) {
@@ -71,7 +73,7 @@ class JobService extends BaseService {
     proposal.status = "accepted";
     await proposal.save();
 
-    job.freelancerId = freelancerId; 
+    job.assignedFreelancerId = freelancerId; 
     await job.save();
 
     return { message: "Freelancer assigned successfully", job };
