@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    userId: {  // User modeline ait foreign key
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

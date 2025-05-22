@@ -38,6 +38,7 @@ router.post("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobC
 router.put("/job/:id", authMiddleware, roleMiddleware("client"), (req, res) => JobController.updateJob(req, res));
 router.delete("/job/:id", authMiddleware, roleMiddleware("client"), (req, res) => JobController.deleteJob(req, res));
 router.get("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobController.getJobs(req, res));
+router.post("/job/assign", authMiddleware, roleMiddleware("client"), (req, res) => JobController.assignJob(req, res));
 
 
 // PROPOSAL

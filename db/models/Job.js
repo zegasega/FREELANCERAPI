@@ -26,15 +26,41 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     status: {
-      type: DataTypes.ENUM("open", "closed", "paused"),
+      type: DataTypes.ENUM("open", "assigned", "closed", "paused"),
       defaultValue: "open",
     },
+    assignedFreelancerId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    }
+  }, {
+    timestamps: true,
+    tableName: "jobs",
   });
 
   Job.associate = (models) => {
     Job.belongsTo(models.User, {
       foreignKey: "clientId",
       as: "client",
+      onDelete: "CASCADE",
+    });
+
+    Job.belongsTo(models.User, {
+      foreignKey: "assignedFreelancerId",
+      as: "assignedFreelancer",
+      onDelete: "SET NULL",
+    });
+
+    Job.hasMany(models.Proposal, {
+      foreignKey: "jobId",
+      as: "proposals",
+      onDelete: "CASCADE",
+    });
+
+    Job.hasMany(models.Review, {
+      foreignKey: "jobId",
+      as: "reviews",
+      onDelete: "CASCADE",
     });
   };
 

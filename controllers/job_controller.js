@@ -5,6 +5,17 @@ class JobController extends BaseController {
     super();
   }
 
+  async assignJob(req, res) {
+    try {
+      const {jobId, freelancerId} = req.body;
+      const result = await this.JobService.assignFreelancer(jobId,freelancerId);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json(error);
+      
+    }
+  }
+
   async createJob(req, res) {
     try {
       const jobData = { clientId: req.user.id, ...req.body };
