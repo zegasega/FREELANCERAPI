@@ -5,7 +5,6 @@ const ProfileController = require("../controllers/profile_controller");
 const authMiddleware = require("../middleware/auth");
 const roleMiddleware  = require("../middleware/role");
 const JobController = require("../controllers/job_controller");
-
 // AUTH ROUTES
 router.post("/auth/register", (req, res) => UserController.Register(req, res));
 router.post("/auth/login", (req, res) => UserController.Login(req, res));
@@ -32,9 +31,15 @@ router.put("/freelance/profil", authMiddleware, roleMiddleware("freelancer"), (r
   ProfileController.UpdateFreelancerProfile(req, res)
 );
 
-
+// JOBS
 router.post("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobController.createJob(req, res));
 router.put("/job/:id", authMiddleware, roleMiddleware("client"), (req, res) => JobController.updateJob(req, res));
 router.delete("/job/:id", authMiddleware, roleMiddleware("client"), (req, res) => JobController.deleteJob(req, res));
 router.get("/job", authMiddleware, roleMiddleware("client"), (req, res) => JobController.getJobs(req, res));
+
+
+// PROPOSAL
+
+
+
 module.exports = router;
